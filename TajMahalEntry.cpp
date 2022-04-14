@@ -8,9 +8,8 @@ int solution(long* arr,int num){
                 if(arr[i] -i <=0){
                         start=0;
                 }
-                float temp=(float) (arr[i]-i)/num;
-                if( (temp > 0) && (arr[i]-i)%num !=0 ){
-                        start= temp +1;
+                if((arr[i]-i)%num > 0 || (arr[i]-i) == num ){
+                        start= (arr[i]-i)/num+1;
                 }
                 if(finalStart > start){
                         finalStart=start;
@@ -29,3 +28,17 @@ int main(){
         cout<<solution(arr,num);
         return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
