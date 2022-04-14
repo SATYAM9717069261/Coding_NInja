@@ -5,12 +5,12 @@ int solution(long* arr,int num){
         long gateNumber=-1;
         for(int i=0;i<num;i++){
                 int start=0;
-                if(arr[i] -i <=0){
-                        start=0;
-                }
-                if((arr[i]-i)%num > 0 || (arr[i]-i) == num ){
-                        start= (arr[i]-i)/num+1;
-                }
+            	if((arr[i]-i)%num == 0)
+			start=(arr[i]-i)/num;
+        	else if(arr[i]-i<0)
+            		start=0;
+		else
+			start=((arr[i]-i)/num)+1;
                 if(finalStart > start){
                         finalStart=start;
                         gateNumber=i;
@@ -27,18 +27,4 @@ int main(){
                 cin>>arr[i];
         cout<<solution(arr,num);
         return 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+} 
