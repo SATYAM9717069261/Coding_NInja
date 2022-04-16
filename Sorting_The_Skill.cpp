@@ -9,25 +9,26 @@ void swap(int* arr, int i,int j){
 void print(int* arr, int num){
 	for(int i=0;i<num;i++)
 		cout<<arr[i]<<" ";
+	cout<<endl;
 }
 bool solution(int* arr,int num){
-	//sort(temp,temp+num);
 	int i=0;
-	while(i<num){
-		cout<<"Inside => "<<arr[i];
+	int max=0;
+	while(i<(num-1)){
 		if(arr[i] > arr[i+1]){
-			
-			if(arr[i+1] - arr[i] == 1){
-				swap(arr,i+1,i);
+			if(arr[i]-arr[i+1] == 1){
+				swap(arr[i],arr[i+1]);
 				print(arr,num);
-				i+=2;
+				max=arr[i+1];		
 			}else
 				return false;
-		}else{
-			i+=1;
 		}
+		i++;
 	}
-	return true;
+	if(max<=arr[i])
+		return true;
+	else
+		return false;
 }
 
 int main(){
@@ -35,6 +36,9 @@ int main(){
 	int arr[num];
 	for(int i=0;i<num;i++)
 		cin>>arr[i];
-	cout<<solution(arr,num);
+	if(solution(arr,num)==1)
+		cout<<"True";
+	else
+		cout<<"False";
 	return 0;
 }
