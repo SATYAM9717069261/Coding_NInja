@@ -28,6 +28,7 @@ bool solution(int current_col,int board[][], int board_row,int board_col, int n_
 					return true;
 			}
 		}
+		//set
 		return false;
 	}
 }
