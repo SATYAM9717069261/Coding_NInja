@@ -4,7 +4,7 @@ int solution(int* arr, int size,int* maxa){
 	if(size < 0 )
 		return 0;
 	if(maxa[size]!=-1)
-		return maxa[size];
+		return maxa[size] 
 	int last = solution(arr,size-2,maxa) + arr[size];
 	int lastSec = solution(arr,size-1,maxa);
 	maxa[size]= max(last,lastSec);
