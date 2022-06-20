@@ -1,39 +1,46 @@
 #include<bits/stdc++.h>
 using namespace std;
+void print(int** arr,int n,int m){
+  for(int i=0;i<n;i++){
+    for(int j=0;j<m;j++)
+      cout<<arr[i][j]<<" ";
+    cout<<endl;
+  }
+}
+void solve(){
+  int h,k;
+  cin>>h>>k;
+  int mat[h][k];
+  for(int i=0;i<h;i++){
+    for(int j=0;j<k;j++)
+      cin>>mat[i][j];
+  }
+  for(int i=1;i<h;i++){
+    for(int j=0;j<k;j++){
+      if(j==0)
+          mat[i][j]+=min(mat[i-1][j],mat[i-1][j+1]);
+      else if(j== k-1)
+          mat[i][j] += min(mat[i-1][j],mat[i-1][j-1]);
+      else
+          mat[i][j]+=min(min(mat[i-1][j-1],mat[i-1][j+1]),mat[i-1][j]);
+    }
+  }
+  int ans = INT_MAX;
+  for(int j=0;j<k;j++)
+    ans=min(ans,mat[h-1][j]);
+  
+  for(int i=0;i<h;i++){
+    for(int j=0;j<k;j++)
+      cout<<mat[i][j]<<" ";
+    cout<<endl;
+  }
 
-pair<int,bool> solution(pair<int,bool>** arr,int r,int c, int m_c){
-  if(r == 0)
-    return arr[r][c];
-  if(arr[r][c].second == 1)
-    return arr[r][c];
-  int up_l=999;
-  int up_r=999;
-  if( (c-1) >= 0)
-      up_l= solution(arr,r-1,c-1,m_c).first;
-  if((c+1)<= m_c)
-      up_r= solution(arr,r-1,c+1,m_c).first;
-  int up = solution(arr,r-1,c,m_c).first;
-  arr[r][c] = make_pair( arr[r][c].first+min({ up_l,up_r,up }) , 1);
-  return arr[r][c];
+  //cout<<ans;
 }
 
 int main(){
- int m,n;
- cin>>m>>n;
- pair<int,bool>** arr = new pair<int,bool>*[m];
- for(int i=0;i<m;i++){
-   arr[i] = new pair<int,bool>[n];
-   for(int j=0;j<n;j++){
-     int a;cin>>a; 
-     arr[i][j]=make_pair(a,0);
-   }
- }
- int min=999;
- for(int i=n-1;i>=0;i--){
-   pair<int,bool> resp = solution(arr,m-1,i,n-1);
-   if(resp.first < min)
-     min=resp.first;
- }
- cout<<min;
- return 0;
+  ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  solve();
+  return 0;
 }
