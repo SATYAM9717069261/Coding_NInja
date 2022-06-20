@@ -1,40 +1,38 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int solution(int** arr,int r,int c, int m_c,int** res){
+pair<int,bool> solution(pair<int,bool>** arr,int r,int c, int m_c){
   if(r == 0)
     return arr[r][c];
-  if(res[r][c]!=-1)
-    return res[r][c];
+  if(arr[r][c].second == 1)
+    return arr[r][c];
   int up_l=999;
   int up_r=999;
   if( (c-1) >= 0)
-      up_l= solution(arr,r-1,c-1,m_c,res);
+      up_l= solution(arr,r-1,c-1,m_c).first;
   if((c+1)<= m_c)
-      up_r= solution(arr,r-1,c+1,m_c,res);
-  int up = solution(arr,r-1,c,m_c,res);
-  res[r][c] = arr[r][c]+min({ up_l,up_r,up });
-  return res[r][c];
+      up_r= solution(arr,r-1,c+1,m_c).first;
+  int up = solution(arr,r-1,c,m_c).first;
+  arr[r][c] = make_pair( arr[r][c].first+min({ up_l,up_r,up }) , 1);
+  return arr[r][c];
 }
 
 int main(){
  int m,n;
  cin>>m>>n;
- int** arr = new int*[m];
- int** res = new int*[m];
+ pair<int,bool>** arr = new pair<int,bool>*[m];
  for(int i=0;i<m;i++){
-   arr[i] = new int[n];
-   res[i] = new int[n];
+   arr[i] = new pair<int,bool>[n];
    for(int j=0;j<n;j++){
-     cin>>arr[i][j];
-     res[i][j]=-1;
+     int a;cin>>a; 
+     arr[i][j]=make_pair(a,0);
    }
  }
  int min=999;
  for(int i=n-1;i>=0;i--){
-   int resp = solution(arr,m-1,i,n-1,res);
-   if(resp < min)
-     min=resp;
+   pair<int,bool> resp = solution(arr,m-1,i,n-1);
+   if(resp.first < min)
+     min=resp.first;
  }
  cout<<min;
  return 0;
