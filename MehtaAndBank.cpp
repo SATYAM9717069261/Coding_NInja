@@ -1,53 +1,47 @@
 #include<bits/stdc++.h>
 using namespace std;
-void print(int* arr,int size){
-	for(int i=0;i<size;i++)
-		cout<<arr[i]<<endl;
-}
-bool cond(int a ,int b){
-  if(a>b) 
-    return true;
-  else
-    return false;
-}
-pair<int,int> solution(pair<int,int>* arr, int size, int MaxWeight,int* selection){
-	if(size < 0 || (MaxWeight - arr[size].second ) < 0 ){
-		return make_pair(0,0);	
-  }
-  if( (MaxWeight - arr[size].second ) == 0 )
-      return arr[size];
-	pair<int,int> with = solution(arr,size-1,MaxWeight-arr[size].second,selection);
-  with.first += arr[size].first;
-  with.second += arr[size].second;
-	pair<int,int> without =  solution(arr,size-1,MaxWeight,selection);
-	if(with.first > without.first){
-    selection[size]=arr[size].first;
-		return with;
-  }
-	else
-		return without;
-}
-
 int main(){
-	int size;cin>>size;
-	int maxWeight;cin>>maxWeight;
-	pair<int,int> arr[size]; //<profit,weight>
-	for(int i=0;i<size;i++){
-		int in;cin>>in;
-		arr[i] = make_pair(in,0);
-	}
-	for(int i=0;i<size;i++){
-		int in;cin>>in;
-		arr[i] = make_pair(arr[i].first,in);
-	}
-	//print(arr, size);
-	int selection[size];
-  for(int i=0;i<size;i++)
-    selection[i]=-1;
-  pair<int,int> result = solution(arr,size-1,maxWeight,selection);
-	cout<<result.first << " " << result.second<<endl; 
-	print(selection, size);
-  sort(selection,selection + size,cond);
-	print(selection, size);
+  int n,w;
+  cin>>n>>w;
+  pair<long long ,long long> arr[n+1];
+  for(int i=0;i<n;i++){
+    int pr;cin>>pr;
+    arr[i].first = pr;
+    int we;cin>>we;
+    arr[i].second = we;
+  }
+  sort(arr,arr+n);
+  long long *** dp = new long long**[2];
+  for(int i=0;i<2;i++){
+    dp[i] = new long long* [n+1];
+    for(int j=0;j<=n;j++){
+      dp[i][j] = new long long[w+1];
+      for(int k=0;k<=w;k++)
+        dp[i][j][k] = 0;
+    }
+  }
+  int primes[11] = {1,2,3,5,7,11,13,17,19,23,29};
+  for(int i=1;i<=n;i++){
+    for(int j=1;j<=w;j++){
+      dp[0][i][j] = dp[0][i-1][j];
+      if(j>=arr[i-1].second){
+        dp[0][i][j] = max(dp[0][i][j] , dp[0][i-1][j-arr[i-1].second]+arr[i-1].first);        
+      }
+    }
+  }
+
+  for(int prime = 1;prime <=10;prime++){
+    int p =prime%2;
+    for(int i=1;i<=n;i++){
+      for(int j=1;j<=w;j++){
+        dp[p][i][j] = dp[p][i-1][j];
+        if(j >= arr[i-1].second){
+          dp[p][i][j] = max(dp[p][i][j],max(dp[p][i-1][j-arr[i-1].second] + arr[i-1].first,
+                dp[p-1][i-1][j-arr[i-1].second] + arr[i-1].first * primes[prime] ));
+        }
+      }
+    }
+  }
+  cout<<dp[0][n][w]<<endl;
   return 0;
 }
