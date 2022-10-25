@@ -1,58 +1,75 @@
-#include<bits/stdc++.h>
+#include<iostream>
+#include<string>
 using namespace std;
-struct arr{
-  char x;
-  int last_occur;
-};
-void print(arr* string, int datalen){
-  for(int i=0;i<datalen;i++){
-    cout<<"Char => "<<string[i].x<<" Position => "<<string[i].last_occur<<endl;
-  }
-}
-void solution(string str1,arr* stringPreprocess, int str1len){
-  int i=1; int j=0;
-  while(j)
-}
-
-void preprocess(string data, arr* stringPreprocess , int datalen){
-  int i=1;
-  int j=0;
-  stringPreprocess[0].x=' ';
-  stringPreprocess[0].last_occur = 0;
-  stringPreprocess[j+1].x = data[j];
-  stringPreprocess[j+1].last_occur = j;
-  while(i<datalen){
-    stringPreprocess[i+1].x = data[i]; 
-    if(data[j] == data[i]){
-      stringPreprocess[i+1].last_occur= j+1;
-      j++;
-    }else{
-      j=(stringPreprocess[j].last_occur+1);
-      while(j >= 0){
-        if(j == 0){
-          stringPreprocess[i+1].last_occur = stringPreprocess[j].last_occur;
-          break;
+int *getLPS(string pattern)
+{
+    int len=pattern.length();
+    int *lps=new int [len];
+    lps[0]=0;
+    int i=1, j=0;
+    while(i<len)
+    {
+        if(pattern[i]==pattern[j])
+        {
+            lps[i]=j+1;
+            i++;
+            j++;
         }
-        if(stringPreprocess[j].x == data[i]){
-          stringPreprocess[i+1].last_occur = j;
-          break;
-        }else{
-          j--;
+        else
+        {
+            if(j!=0)
+            {
+                j=lps[j-1];
+            }
+            else
+            {
+                lps[i]=0;
+                i++;
+            }
+            
         }
-      }
     }
-    i++;
-  };
-  //print(stringPreprocess,datalen);
+    return lps;
 }
-
-int main(){
-  int test;cin>>test;
-  while(test--){
-    string pattern;cin>>pattern;
-    string str;cin>>str;
-    arr stringPreprocess[pattern.length()+1];
-    preprocess(pattern,stringPreprocess,pattern.length()+1);
-  }
-  return 0;
+bool KmpSearch(string text, string pattern)
+{
+    int *lps=getLPS(pattern);
+    int lenText=text.length();
+    int lenPattern=pattern.length();
+    int i=0, j=0;
+    while(i<lenText&&j<lenPattern)
+    {
+        if(text[i]==pattern[j])
+        {
+            i++;
+            j++;
+        }
+        else
+        {
+            if(j!=0)
+            {
+                j=lps[j-1];
+            }
+            else
+            {
+                i++;
+            }
+            
+        }
+        
+    }
+    return j==lenPattern?true:false;
+}
+int main()
+{
+    int test;cin>>test;
+    while(test--){
+        string subString; cin>>subString;
+        string str;cin>>str;
+        if(KmpSearch(str, subString))
+            cout<<"Yes"<<endl;
+        else
+            cout<<"No"<<endl;
+    }
+    return 0;
 }
